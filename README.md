@@ -1,10 +1,10 @@
-# Dev Toolkit
+# Agent Toolkits
 
-面向开发者的开发协作方法论工具集：把可复用的开发协作实践做成 Agent Skill，按需持续扩充。现包含两个相互独立的 Skill：一个通过阶段化访谈产出 Markdown 设计文档，一个把固定的设计纪律一次性安装进编码会话。目标是消除“开发者不知道 Agent 做了什么”的黑盒现状——让 Agent 的判断、假设和无知都落到可审查的文件上。
+面向开发者的开发协作方法论工具集：把可复用的开发协作实践做成 Agent Skill 和插件，按需持续扩充。当前只含 `dev-toolkit` 一个插件，提供两个相互独立的 Skill：一个通过阶段化访谈产出 Markdown 设计文档，一个把固定的设计纪律一次性安装进编码会话。目标是消除“开发者不知道 Agent 做了什么”的黑盒现状——让 Agent 的判断、假设和无知都落到可审查的文件上。
 
 ## 安装
 
-本仓库同时是一个本地插件市场（marketplace）。把本仓库目录添加为 marketplace 后安装 `dev-toolkit` 插件，两个 Skill 即可使用，调用形式为 `dev-toolkit:facilitator` 和 `dev-toolkit:init`（短名 `facilitator`、`init` 同样有效）。添加本地 marketplace 的操作与此前安装 zcode-pets 时相同。推送到 GitHub 后，marketplace 来源可改为 GitHub 仓库地址，供他人一键安装。
+本仓库同时是一个本地插件市场（marketplace）。把本仓库目录添加为 marketplace 后安装 `dev-toolkit` 插件，两个 Skill 即可使用，调用形式为 `dev-toolkit:facilitator` 和 `dev-toolkit:init`（短名 `facilitator`、`init` 同样有效）。
 
 ## Skill 组成
 
@@ -57,5 +57,5 @@
 - 设计 Skill 的 `SKILL.md` 保持简洁并低于 500 行，所有参考文件由它直接链接；
 - `templates/` 结构与 `docs/design/` 保持镜像，模板改动需同步检查对应阶段剧本与质量门禁；
 - 准则内容只在 `plugins/dev-toolkit/skills/init/agent-guidelines.md` 维护一份；
-- 插件结构：marketplace 清单位于 `.claude-plugin/marketplace.json`，插件本体在 `plugins/dev-toolkit/`；发布新版时更新 `plugins/dev-toolkit/.claude-plugin/plugin.json` 的版本号，并与插件 `package.json` 保持一致；
+- 插件结构：marketplace 清单有两份（根目录 `marketplace.json` 与 `.claude-plugin/marketplace.json`），内容一致，改动需同步；插件本体在 `plugins/dev-toolkit/`，新增插件时在两份清单中登记；发布新版时更新 `plugins/dev-toolkit/.claude-plugin/plugin.json` 的版本号，并与插件 `package.json` 保持一致；
 - 路径使用正斜杠；新规则同时检查示例、质量门禁和阶段剧本是否需要更新。
