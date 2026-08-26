@@ -1,0 +1,13 @@
+{
+  "name": "agent-toolkits",
+  "owner": {
+    "name": "Kommisaar"
+  },
+  "plugins": [
+    {
+      "name": "dev-toolkit",
+      "source": "./plugins/dev-toolkit",
+      "description": "开发协作方法论工具集：现含分阶段设计访谈（产出 docs/design 设计文档）与设计协作纪律安装（写入 AGENTS.md）两个 Skill"
+    }
+  ]
+}

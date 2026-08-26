@@ -1,0 +1,8 @@
+{
+  "name": "dev-toolkit",
+  "version": "0.1.0",
+  "description": "开发协作方法论工具集：现含 facilitator（分阶段访谈产出 docs/design/ 设计文档）与 init（把设计协作纪律以受管段落写入 AGENTS.md）。",
+  "author": {
+    "name": "Kommisaar"
+  }
+}
