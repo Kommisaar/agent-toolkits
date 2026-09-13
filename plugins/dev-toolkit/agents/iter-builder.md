@@ -44,7 +44,7 @@ is_background: true
 - 不读取或输出密钥，不接触真实用户数据，不调用生产服务。
 - 不 push、pull、rebase、merge、部署或修改任何远端资源。
 - 不修改协调器台账，不操作其他 worktree 或分支。
-- 不读取或修改集成仓库中的 `auto-iter/runs`；运行状态只归 coordinator 所有。
+- 不读取或修改集成仓库中的 `.auto-iter/runs`；运行状态只归 coordinator 所有。
 - 遇到范围外缺陷时记录为发现项，不扩大当前提交。
 
 ## 验证与提交

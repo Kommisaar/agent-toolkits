@@ -19,8 +19,8 @@ v0.3.3 将协调状态保存到目标仓库的 `auto-iter/runs`，并支持显�
 持久化不代表后台 Agent 会跨会话存活，也不会自动唤醒、重试、部署或修改外部项目管理
 系统；恢复时必须重新核对 Git 现场。
 
-v0.3.4 支持项目 `AGENTS.md` 声明 worktree 池：开工时检查，未声明时询问添加；池位
-固定命名并跨任务复用依赖，任务标识只体现在分支名。
+v0.3.4 支持项目 `AGENTS.md` 声明的 worktree 池：开工时检查，未声明时询问添加；池位
+固定命名并跨任务复用依赖，任务标识只体现在分支名。状态目录更名为 `.auto-iter/runs`。
 
 ## 策略选择与优先级
 
@@ -105,15 +105,15 @@ Run ID 与状态路径:
 状态固定保存在：
 
 ```text
-<repo-root>/auto-iter/runs/
+<repo-root>/.auto-iter/runs/
 ```
 
 首次初始化由状态助手通过 `git rev-parse --git-common-dir` 定位并幂等更新
-`.git/info/exclude`，只加入 `/auto-iter/runs/`。初始化失败、路径下存在已跟踪文件、
+`.git/info/exclude`，只加入 `/.auto-iter/runs/`。初始化失败、路径下存在已跟踪文件、
 目录解析到仓库外或 ignore 规则无法确认时进入 `PAUSED`。
 
 只有 coordinator 可以写状态。所有子 Agent 的禁止修改范围必须包含
-`<repo-root>/auto-iter/runs/**`；状态中不得保存密钥、完整源码、用户数据或不必要的完整
+`<repo-root>/.auto-iter/runs/**`；状态中不得保存密钥、完整源码、用户数据或不必要的完整
 日志。
 
 每次状态转换、任务派发与完成、分支/worktree/commit 确定、门禁结束、审查结论、合并和
@@ -257,7 +257,7 @@ Verifier 完整门禁、超时与允许生成物:
 - 只处理一个任务，不扩张范围；
 - 只提交、不 push，不 pull/rebase/merge 集成分支；
 - 不修改协调台账；
-- 不读取或修改 `auto-iter/runs`；
+- 不读取或修改 `.auto-iter/runs`；
 - 如实报告偏离、失败和最终 commit SHA。
 
 实现代理在后台运行。不要无依据轮询后台子代理；利用完成通知，并在等待期间进行不冲突的

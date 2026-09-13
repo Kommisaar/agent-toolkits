@@ -105,7 +105,7 @@ CI 或运行卡明确要求，不能因为当前主机无法覆盖其他平台�
 - 不执行来源不明的外部二进制；
 - 检查图标、资源、identifier、版本号和 bundle target；
 - 签名、公证、发布和 updater artifact 属于外部副作用，不自动执行；
-- release pipeline 中的 Token、证书和私钥不能写入日志或 `auto-iter/runs`。
+- release pipeline 中的 Token、证书和私钥不能写入日志或 `.auto-iter/runs`。
 
 ## 生成物与污染
 

@@ -17,7 +17,7 @@ Verifier 使用 `readonly: false`，因为编译和测试可能产生缓存、�
 源代码的授权。必须在已经 rebase 到最新集成基线的任务 worktree 中运行，并与 builder
 串行占用该 worktree。
 
-不得读取或修改集成仓库中的 `auto-iter/runs`。协调器负责把必要的策略、基线和任务信息
+不得读取或修改集成仓库中的 `.auto-iter/runs`。协调器负责把必要的策略、基线和任务信息
 传入，并负责持久化验证结果。
 
 ## 必需输入

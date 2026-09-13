@@ -5,7 +5,7 @@
 每个目标仓库使用自己的本地状态目录：
 
 ```text
-<repo-root>/auto-iter/runs/
+<repo-root>/.auto-iter/runs/
 ├── active.json
 └── <run-id>/
     ├── state.json
@@ -17,7 +17,7 @@
 
 ```gitignore
 # iter-loop local runtime state
-/auto-iter/runs/
+/.auto-iter/runs/
 ```
 
 状态目录属于当前 clone，不提交、不 push，也不视为备份。`git clean -xfd` 仍可能删除它。
@@ -25,7 +25,7 @@
 ## 写入所有权
 
 - 只有 coordinator 可以调用状态助手的写命令。
-- `iter-scout`、`iter-builder` 和 `iter-reviewer` 禁止修改 `auto-iter/runs`。
+- `iter-scout`、`iter-builder` 和 `iter-reviewer` 禁止修改 `.auto-iter/runs`。
 - `/iter-status` 只可调用 `show`、`list` 和不带 `--write` 的 `reconcile`。
 - `/iter-stop`、`/iter-resume` 和主协调流程可按本协议写入状态。
 - 不得直接手工拼接 `.git/info/exclude` 路径，也不得覆盖其中的用户内容。
@@ -98,7 +98,7 @@ python <state-helper> init
 助手在创建状态前：
 
 1. 确认目标是 Git 工作树；
-2. 确认 `auto-iter/runs` 没有已跟踪文件且没有解析到仓库外；
+2. 确认 `.auto-iter/runs` 没有已跟踪文件且没有解析到仓库外；
 3. 幂等配置并验证 `info/exclude`；
 4. 拒绝覆盖未停止的活动运行，除非 coordinator 已获得明确授权并使用
    `--replace-active`。

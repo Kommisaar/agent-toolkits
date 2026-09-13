@@ -302,7 +302,7 @@ def validate_components(validation: Validation) -> dict[str, int]:
             "SKILL.md 未直接引用状态协议",
         )
         validation.require(
-            "/iter-resume" in body and "auto-iter/runs" in body,
+            "/iter-resume" in body and ".auto-iter/runs" in body,
             "SKILL.md 未声明 v0.3 恢复与状态目录",
         )
 
@@ -434,8 +434,8 @@ def validate_runtime_state(validation: Validation) -> None:
         except SyntaxError as exc:
             validation.error(f"状态助手存在 Python 语法错误：{exc}")
         for marker in (
-            'STATE_DIR = Path("auto-iter") / "runs"',
-            'EXCLUDE_RULE = "/auto-iter/runs/"',
+            'STATE_DIR = Path(".auto-iter") / "runs"',
+            'EXCLUDE_RULE = "/.auto-iter/runs/"',
             '"activate"',
             '"reconcile"',
             '"sync-head"',
@@ -445,7 +445,7 @@ def validate_runtime_state(validation: Validation) -> None:
             validation.require(marker in helper, f"状态助手缺少契约标记：{marker}")
     if protocol:
         for marker in (
-            "/auto-iter/runs/",
+            "/.auto-iter/runs/",
             "git rev-parse --git-common-dir",
             "active.json",
             "state.json",

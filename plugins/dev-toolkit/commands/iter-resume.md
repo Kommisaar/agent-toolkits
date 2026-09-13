@@ -1,6 +1,6 @@
 ---
 name: iter-resume
-description: 从仓库的 auto-iter/runs 持久状态恢复 iter-loop，重新核对 Git 现场后安全重建协调流程。
+description: 从仓库的 .auto-iter/runs 持久状态恢复 iter-loop，重新核对 Git 现场后安全重建协调流程。
 ---
 
 # 恢复 Iter Loop
@@ -29,7 +29,7 @@ description: 从仓库的 auto-iter/runs 持久状态恢复 iter-loop，重新�
    - 能安全写状态则转换为 `PAUSED` 并记录 blocker；
    - 不 reset、stash、清理、切换分支或自动解决冲突；
    - 提出一个能解除当前 blocker 的明确问题。
-6. Git 现场安全后运行 `ensure-ignore`，确认 `/auto-iter/runs/` 仍被当前 clone 忽略，再运行
+6. Git 现场安全后运行 `ensure-ignore`，确认 `/.auto-iter/runs/` 仍被当前 clone 忽略，再运行
    带 `--write` 的 `reconcile` 保存对账证据。
 7. 重建任务状态：
    - commit 已在集成分支：核对后标记 `MERGED`；

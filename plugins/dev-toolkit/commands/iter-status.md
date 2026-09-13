@@ -11,7 +11,7 @@ description: 只读读取仓库内持久状态并与 Git 对账，汇总当前 i
 ## 核对顺序
 
 1. 定位插件内 `skills/iter-loop/scripts/state_store.py`，不得复制到目标仓库。
-2. 在当前 Git 仓库运行 `show --repo <repo-root>`，读取 `auto-iter/runs/active.json` 指向的
+2. 在当前 Git 仓库运行 `show --repo <repo-root>`，读取 `.auto-iter/runs/active.json` 指向的
    状态。
 3. 运行不带 `--write` 的 `reconcile --repo <repo-root>`，核对：
    - 集成分支、HEAD 和工作树是否干净；

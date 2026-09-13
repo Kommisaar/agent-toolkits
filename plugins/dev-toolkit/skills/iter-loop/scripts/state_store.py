@@ -16,8 +16,8 @@ from typing import Any, Iterable
 
 
 SCHEMA_VERSION = 1
-STATE_DIR = Path("auto-iter") / "runs"
-EXCLUDE_RULE = "/auto-iter/runs/"
+STATE_DIR = Path(".auto-iter") / "runs"
+EXCLUDE_RULE = "/.auto-iter/runs/"
 EXCLUDE_COMMENT = "# iter-loop local runtime state"
 RUN_STATES = {"RUNNING", "DRAINING", "PAUSED", "STOPPED"}
 TASK_STATES = {
@@ -157,17 +157,17 @@ def append_event(run_dir: Path, event: dict[str, Any]) -> None:
 
 
 def ensure_untracked_state_path(repo: Path) -> None:
-    auto_iter = repo / "auto-iter"
+    auto_iter = repo / ".auto-iter"
     runs = state_root(repo)
     if auto_iter.exists() and not is_within(auto_iter, repo):
-        raise StateError(f"auto-iter 解析到仓库外部，拒绝使用：{auto_iter}")
+        raise StateError(f".auto-iter 解析到仓库外部，拒绝使用：{auto_iter}")
     if runs.exists() and not is_within(runs, repo):
         raise StateError(f"运行状态目录解析到仓库外部，拒绝使用：{runs}")
 
-    tracked = run_git(repo, ["ls-files", "--", "auto-iter/runs"]).stdout.strip()
+    tracked = run_git(repo, ["ls-files", "--", ".auto-iter/runs"]).stdout.strip()
     if tracked:
         raise StateError(
-            "auto-iter/runs 下存在已跟踪文件，.git/info/exclude 无法保护它们：\n"
+            ".auto-iter/runs 下存在已跟踪文件，.git/info/exclude 无法保护它们：\n"
             f"{tracked}"
         )
 
@@ -205,7 +205,7 @@ def ensure_info_exclude(repo: Path) -> Path:
             "--quiet",
             "--no-index",
             "--",
-            "auto-iter/runs/.iter-loop-probe",
+            ".auto-iter/runs/.iter-loop-probe",
         ],
         check=False,
     )
@@ -983,7 +983,7 @@ def add_repo_argument(parser: argparse.ArgumentParser) -> None:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
-            "在目标仓库的 auto-iter/runs 中维护 iter-loop 状态；"
+            "在目标仓库的 .auto-iter/runs 中维护 iter-loop 状态；"
             "所有输出均为 UTF-8 JSON。"
         )
     )
