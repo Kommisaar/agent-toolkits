@@ -1,6 +1,6 @@
 {
   "name": "dev-toolkit",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "个人开发工具集：iter-loop 持续迭代协调器（运行策略、含 React/Tauri 的技术栈门禁、仓库本地状态和专职子代理持续发现、实现、验证、审查、恢复并线性合并代码改进）与 init（把个人编码规范初始化到项目 AGENTS.md）。",
   "keywords": [
     "iteration",

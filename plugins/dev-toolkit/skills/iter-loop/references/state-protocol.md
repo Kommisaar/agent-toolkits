@@ -111,10 +111,11 @@ python <state-helper> init
 
 - 状态在 `RUNNING`、`DRAINING`、`PAUSED`、`STOPPED` 间转换；
 - 候选被接受、builder 被派发或完成；
-- 任务分支、worktree 或 commit SHA 确定；
+- 任务分支、worktree 或 commit SHA 确定；池模式下 worktree 为池位绝对路径，且该
+  路径在派发落账时必须写入任务记录；
 - 基线、任务、完整或合并后门禁完成；
 - reviewer 请求修改、任务阻塞、拒绝、合并或取消；
-- coordinator 创建或清理自有 worktree/分支。
+- coordinator 创建或清理自有 worktree/分支，含 run 启动时对池位的接管登记。
 
 常用写命令：
 

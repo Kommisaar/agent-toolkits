@@ -56,6 +56,28 @@ Nuxt、Vite 等配置时应用本包。项目同时使用 TypeScript/JavaScript 
 Verifier 运行浏览器测试时必须独占对应 worktree 和本地服务。浏览器工具不可用不代表
 测试通过，应在结果中说明替代证据和残余风险。
 
+## 测试资源预算
+
+多 worktree 并行开发时，完整测试套件是最主要的可复用 CPU 消耗。识别 Vitest 后按以下
+顺序评估（实测先例：全量墙钟 142s → 53s、累计 CPU -90%，断言本身仅占约 4%）：
+
+1. 先测量再动手：用一次全量跑的分项数据（transform / collect / environment /
+   tests）定位大头；组件库依赖树在隔离模式下的重复执行（collect）和 DOM 环境重建
+   （environment）通常远大于断言本身。
+2. `deps.optimizer.web` 预打包重依赖（组件库、`react-dom`、测试库），缓存位于
+   `node_modules/.vitest`——重装依赖即抹除缓存，首跑需重建。
+3. `projects` 分组隔离：依赖干净 `document` 的断言（如遍历
+   `document.styleSheets` / `cssRules` 的样式扫描）单独 `isolate: true` 组，其余
+   `isolate: false` 共享 worker 环境与模块图；新增样式扫描断言必须登记进隔离组。
+   project 不继承顶层 `test` 的 `environment` 与 `deps`，必须逐 project 显式声明，
+   漏配会静默回退（node 环境 / 无预打包），collect 可暴涨数倍。
+4. 纯逻辑测试用文件头 `// @vitest-environment node` 跳过 DOM 环境创建。
+5. `maxWorkers` 按多 worktree 并行预算定值：并行实例数 × workers ≤ 物理核数
+   （例：22 核、3 个并行门禁 → 6 workers）；单跑求极速用 CLI 参数覆盖，不改配置。
+6. 更换环境实现（如 happy-dom 替换 jsdom）会改变可见行为前提（`matchMedia` 缺省、
+   `computedStyle` 归一化、对话框交互差异）；收益不足时弃用并留档，不改断言迁就。
+7. 并行负载下的偶发失败先隔离复跑确认再定性，不得用复跑成功掩盖首次失败。
+
 ## 生成物与污染
 
 重点检查测试截图、视频、trace、coverage、快照、构建目录、框架缓存和生成路由。只有
