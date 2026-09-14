@@ -37,6 +37,9 @@ FORBIDDEN_OPERATION_RE = re.compile(
     r"\b(?:git\s+reset\s+--hard|git\s+clean\s+-[a-z]*f|git\s+checkout\s+--|rm\s+-rf)\b",
     re.IGNORECASE,
 )
+# 禁令语境豁免：条文以“不得/禁止”等否定措辞引用破坏性命令名时属于
+# 规则本身，不是在教执行。
+FORBIDDEN_NEGATION_RE = re.compile(r"不得|禁止|不要|不应|不自动|不执行")
 
 
 class Validation:
@@ -462,8 +465,15 @@ def validate_markdown(validation: Validation) -> None:
             if line.endswith((" ", "\t")):
                 validation.error(f"行尾空白：{relative}:{line_number}")
 
-        if FORBIDDEN_OPERATION_RE.search(text):
-            validation.error(f"包含禁止的破坏性命令：{relative}")
+        for match in FORBIDDEN_OPERATION_RE.finditer(text):
+            line_start = text.rfind("\n", 0, match.start()) + 1
+            line_end = text.find("\n", match.end())
+            if line_end == -1:
+                line_end = len(text)
+            context = text[line_start:line_end]
+            if not FORBIDDEN_NEGATION_RE.search(context):
+                validation.error(f"包含禁止的破坏性命令：{relative}")
+                break
 
         for target in MARKDOWN_LINK_RE.findall(text):
             target = target.strip().strip("<>")
