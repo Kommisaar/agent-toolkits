@@ -1,6 +1,6 @@
 # AGENTS.md
 
-本仓库是本地插件市场（marketplace），把可复用的开发协作实践做成 Agent 插件，按需扩充，现含一个插件：`dev-toolkit` 是个人开发工具集，含 `iter-loop` 持续迭代协调器（主 Skill、scout/builder/verifier/reviewer 四个子代理、三个命令、三套策略和七个技术栈门禁包）与 `init`（把个人编码规范以受管段落写入项目 `AGENTS.md`）。仓库为纯 Markdown/JSON/Python 脚本，无构建、测试和 lint。
+本仓库是本地插件市场（marketplace），把可复用的开发协作实践做成 Agent 插件，按需扩充，现含两个插件：`dev-toolkit` 是个人开发工具集，含 `iter-loop` 持续迭代协调器（主 Skill、scout/builder/verifier/reviewer 四个子代理、三个命令、三套策略和七个技术栈门禁包）与 `init`（把个人编码规范以受管段落写入项目 `AGENTS.md`）；`design-toolkit` 是前端设计与动效工具集（现含 `ui-design` 前端设计品味与 `motion` 动效设计两个 Skill）。仓库为纯 Markdown/JSON/Python 脚本，无构建、测试和 lint。
 
 ## 目录结构
 
@@ -12,6 +12,11 @@
   - `agents/`：`iter-scout`、`iter-builder`、`iter-verifier`、`iter-reviewer` 四个子代理。
   - `commands/`：`iter-status`、`iter-stop`、`iter-resume`。
   - `scripts/validate_plugin.py`：插件自带静态校验器。
+- `plugins/design-toolkit/`：前端设计与动效插件（组件说明见仓库根 `README.md`）。
+  - `.cursor-plugin/plugin.json`、`.claude-plugin/plugin.json` 与 `package.json`：插件元数据，三处 name/version 必须一致，发布新版时同步更新。
+  - `skills/ui-design/`：前端设计品味 Skill（`SKILL.md` 入口，`references/` 为反模式清单与 token/排版规则）。
+  - `skills/motion/`：动效设计 Skill（`SKILL.md` 入口，`references/` 为时长缓动参数表与可访问性/性能规则）。
+  - `scripts/validate_plugin.py`：插件自带静态校验器（`EXPECTED_SKILLS` 为 Skill 契约集合，选型落地时更新）。
 - `README.md`：用户文档，其「维护」一节是修改规则的事实来源。
 
 ## 验证方式
@@ -19,7 +24,7 @@
 无自动化校验，改动后自查：
 
 - JSON 文件可解析且格式一致：`python -m json.tool marketplace.json`（对两份 marketplace 清单和插件元数据都要执行）。
-- 插件改动后运行其自带校验器：`python plugins/dev-toolkit/scripts/validate_plugin.py`，并确认三处清单 name/version 一致。
+- 插件改动后运行其自带校验器：`python plugins/dev-toolkit/scripts/validate_plugin.py` 与 `python plugins/design-toolkit/scripts/validate_plugin.py`，并确认各插件三处清单 name/version 一致。
 - SKILL.md 与子代理、命令文件的 frontmatter（name、description）完整，description 中的触发词与 README 描述一致。
 
 ## 架构边界与修改规则

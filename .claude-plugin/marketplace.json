@@ -8,6 +8,11 @@
       "name": "dev-toolkit",
       "source": "./plugins/dev-toolkit",
       "description": "个人开发工具集：iter-loop 持续迭代协调器（授权预算内用 Git worktree、仓库本地状态和 scout/builder/verifier/reviewer 四个后台子代理持续发现、实现、验证、审查并 ff-only 线性合并代码改进，含三套策略、七个技术栈门禁包和 /iter-status、/iter-stop、/iter-resume 命令）与 init（把个人编码规范以受管段落初始化到项目 AGENTS.md）"
+    },
+    {
+      "name": "design-toolkit",
+      "source": "./plugins/design-toolkit",
+      "description": "前端设计与动效工具集：ui-design 前端设计品味 Skill（token 先行、排版层级、反「AI 味」负面清单与质量底线）与 motion 动效设计 Skill（频率门控、时长缓动参数表、可中断与分级降级、存量动效审计）"
     }
   ]
 }

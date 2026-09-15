@@ -1,6 +1,6 @@
 # Agent Toolkits
 
-本地插件市场（marketplace），把可复用的开发协作实践做成 Agent 插件，按需持续扩充。现含一个插件 `dev-toolkit`——个人开发工具集：`iter-loop` 在用户授权的预算内用后台子代理持续发现、实现、验证、审查并线性合并代码改进；`init` 把个人编码规范一次注入项目 `AGENTS.md`、处处生效。目标是消除“开发者不知道 Agent 做了什么”的黑盒现状——让 Agent 的判断、假设和无知都落到可审查的文件上。
+本地插件市场（marketplace），把可复用的开发协作实践做成 Agent 插件，按需持续扩充。现含两个插件：`dev-toolkit`——个人开发工具集，`iter-loop` 在用户授权的预算内用后台子代理持续发现、实现、验证、审查并线性合并代码改进，`init` 把个人编码规范一次注入项目 `AGENTS.md`、处处生效；`design-toolkit`——前端设计与动效工具集，把界面视觉设计、设计品味与交互动效实践做成 Skill 合集（组件选型中）。目标是消除“开发者不知道 Agent 做了什么”的黑盒现状——让 Agent 的判断、假设和无知都落到可审查的文件上。
 
 ## 安装
 
@@ -11,6 +11,8 @@
 - `/iter-status`、`/iter-stop`、`/iter-resume` 三个命令。
 
 `iter-loop` 运行时需要目标机器已安装 Git 和 Python 3.10+。
+
+`design-toolkit`（前端设计与动效）同样已在市场登记，现含 `ui-design`（前端设计品味）与 `motion`（动效设计）两个 Skill。
 
 ## init：初始化个人编码规范
 
@@ -31,6 +33,16 @@
 运行状态保存在目标仓库的 `.auto-iter/runs/`（clone 本地、不提交），只有协调器可写。安全边界包括：不处理用户未提交改动、不自动 push/发布/部署、高风险变更（数据迁移、认证授权、破坏性接口等）必须暂停确认、不信任代理自报结果而以实际 diff 和门禁证据为准。该插件为单会话设计，会话结束后后台代理不再运行，恢复须由用户显式调用 `/iter-resume`。
 
 worktree 池：唯一的任务派发模式。池目录默认在主树同级 `<仓库名>-iter/`（天然同盘），项目 `AGENTS.md` 可声明池目录与池位数覆盖；池位跨任务复用 `node_modules` 与工具缓存，任务标识只体现在分支名。池位与依赖跨 run 保留：run 结束只注销台账登记并留痕，恢复与新 run 优先接管现存池位，物理移除仅在用户明确要求或确认不再迭代时执行。
+
+## design-toolkit：前端设计与动效
+
+前端设计与动效工具集：把界面视觉设计、设计品味与交互动效的可复用实践做成自包含 Skill。现含 `ui-design` 与 `motion` 两个 Skill（0.3.0）；每个 Skill 目录自包含，`SKILL.md` 为唯一入口，参考文件由入口直接链接。
+
+`ui-design`：前端设计品味规范，适用于界面设计、视觉设计、前端页面开发、落地页、原型、UI 改版与设计自查。核心流程：先理解产品、受众与目标（需求模糊时提出 3 个方向供选择）→ 先立设计 token 再写代码（4–6 命名色、≤2 款字体、统一间距基数、ASCII 线框）→ 对照反「AI 味」负面清单自查 → 质量底线（移动端 375px、键盘焦点、对比度、`prefers-reduced-motion`）不可妥协 → 完成前截图自评。只约束视觉与结构决策，不限定组件库与构建工具；允许模型在相关任务中自动触发。
+
+`motion`：动效设计、实现与审计规范，适用于动画、过渡、微交互、入场出场、页面转场、手势拖拽动效与存量动效审计。新建动效走七步决策顺序：频率门控（日触 100+ 的操作不加动画，键盘触发即否决）→ 目的命名 → 工具阶梯 → 属性（只动 `transform`/`opacity`，禁 `scale(0)`）→ 缓动与时长（UI <300ms、禁 `ease-in`、曲线令牌、弹簧默认临界阻尼）→ 中断与出场（transition 不 keyframes、从哪来回哪去）→ 编排（30–80ms stagger、一次一个焦点）。存量动效走只读审计四阶段：侦查 → 八类目审计 → 按「影响÷成本」排序输出发现表 → 用户选定后写自包含改进计划。`prefers-reduced-motion` 分级降级（非开关）与 hover 门控随实现交付。允许模型在相关任务中自动触发。
+
+新增 Skill 的步骤：在 `plugins/design-toolkit/skills/` 下新建 kebab-case 目录（与 frontmatter `name` 一致，`SKILL.md` 为唯一入口）；把目录名加入校验器 `scripts/validate_plugin.py` 的 `EXPECTED_SKILLS` 契约集合；同步更新三处清单 description 与本节，name/version 三处一致并按语义化版本递增。
 
 ## 使用流程
 
@@ -53,8 +65,9 @@ worktree 池：唯一的任务派发模式。池目录默认在主树同级 `<�
 
 ## 维护
 
-- 插件结构：marketplace 清单有两份（根目录 `marketplace.json` 与 `.claude-plugin/marketplace.json`），内容一致，改动需同步；插件本体在 `plugins/dev-toolkit/`，新增插件时在两份清单中登记。
+- 插件结构：marketplace 清单有两份（根目录 `marketplace.json` 与 `.claude-plugin/marketplace.json`），内容一致，改动需同步；插件本体在 `plugins/dev-toolkit/` 与 `plugins/design-toolkit/`，新增插件时在两份清单中登记。
 - `dev-toolkit` 的 name/version 在三处清单保持一致：`.cursor-plugin/plugin.json`（Cursor 加载用，保留双目标兼容）、`.claude-plugin/plugin.json` 与 `package.json`；修改后运行 `python plugins/dev-toolkit/scripts/validate_plugin.py` 做静态校验。
+- `design-toolkit` 同样以 `.cursor-plugin/plugin.json` 为基准保持三处清单 name/version 一致，修改后运行 `python plugins/design-toolkit/scripts/validate_plugin.py`；骨架阶段校验器的 `EXPECTED_SKILLS` 为空集，Skill 选型落地时更新该契约集合并同步三处 description 与 README 的 design-toolkit 小节。
 - 个人编码规范只在 `plugins/dev-toolkit/skills/init/coding-guidelines.md` 维护一份：两条 `user-guidelines` marker 之间（含 marker）是逐字安装到用户项目的受管块；要改规范就改模板后让用户重跑 init，不手工改目标项目里的受管块。
 - init 技术栈文件位于 `plugins/dev-toolkit/skills/init/stacks/`：frontmatter 固定 `id`（与文件名一致）、`label`、`applies-to` 三字段，正文为 `## <label> 专项规范` 下固定顺序的六节骨架（模块与依赖边界、类型数据与接口契约、状态并发与资源生命周期、错误安全与可观测性、测试与可判定验收、反模式与替代方案），无内容的节可省略、顺序不得打乱；栈文件只细化通用规范、不放宽、不逐字重复，与通用规范冲突时以通用规范为准；新增栈无需改校验器，但需在 SKILL.md「技术栈识别」列表登记。
 - 用户文档描述行为时，需与插件 `SKILL.md` 实际行为一致，改动插件行为时同步 README。
