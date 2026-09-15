@@ -1,6 +1,6 @@
 {
   "name": "design-toolkit",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "前端设计与动效工具集：ui-design 前端设计品味（token 先行、排版层级、反「AI 味」清单与质量底线）与 motion 动效设计（频率门控、时长缓动参数表、可中断与 reduced-motion 分级降级、存量动效审计）。",
   "keywords": [
     "design",

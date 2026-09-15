@@ -19,7 +19,7 @@ MARKETPLACE_MANIFEST_PATHS = (
 # 契约快照：插件应包含的 Skill 集合（skills/ 下的一级目录名）。
 # Skill 选型落地时把目录名加入此处，并同步三处清单 description
 # 与 README 的 design-toolkit 小节。
-CONTRACT_VERSION = "0.3.0"
+CONTRACT_VERSION = "0.3.1"
 EXPECTED_SKILLS: set[str] = {"motion", "ui-design"}
 REQUIRED_COMPONENT_KEYS = ("skills",)
 OPTIONAL_COMPONENT_KEYS = ("agents", "commands")
@@ -277,6 +277,10 @@ def validate_skills(validation: Validation) -> int:
                 name == path.parent.name,
                 f"Skill name 必须与目录名一致：{path.relative_to(ROOT)}",
             )
+        validation.require(
+            metadata.get("disable-model-invocation") is True,
+            f"Skill 必须保持显式调用：{path.relative_to(ROOT)}",
+        )
         validation.require(
             len(read_text(path, validation).splitlines()) < 500,
             f"SKILL.md 必须少于 500 行：{path.relative_to(ROOT)}",
